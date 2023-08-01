@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './questao.dart';
 import './resposta.dart';
 
-main() => runApp(PerguntaApp());
+main() => runApp(const PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
@@ -16,9 +16,22 @@ class _PerguntaAppState extends State<PerguntaApp> {
   @override
   Widget build(BuildContext context) {
     final perguntas = [
-      'Qual sua cor favorita?',
-      'Qual é o seu animal favorito?',
+      {
+        'texto': 'Qual sua cor favorita?',
+        'respostas': ['Preto', 'Rosa', 'Vermelho', 'Verde'],
+      },
+      {
+        'texto': 'Qual é o seu animal favorito?',
+        'respostas': ['Águia', 'Tartaruga', 'Cachorro', 'Pato'],
+      },
+      {
+        'texto': 'Qual é a sua cidade favorita?',
+        'respostas': ['São Paulo', 'Curitiba', 'Belo Horizonte', 'Recife'],
+      },
     ];
+
+    List<String> respostas =
+        perguntas[_perguntaSelecionada].cast()['respostas'];
 
     return MaterialApp(
       home: Scaffold(
@@ -27,10 +40,8 @@ class _PerguntaAppState extends State<PerguntaApp> {
         ),
         body: Column(
           children: [
-            Questao(perguntas[_perguntaSelecionada]),
-            Resposta('Resposta 1', _responder),
-            Resposta('Resposta 2', _responder),
-            Resposta('Resposta 3', _responder),
+            Questao(perguntas[_perguntaSelecionada]['texto'].toString()),
+            ...respostas.map((e) => Resposta(e, _responder)).toList(),
           ],
         ),
       ),
@@ -39,6 +50,10 @@ class _PerguntaAppState extends State<PerguntaApp> {
 }
 
 class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
   _PerguntaAppState createState() {
     return _PerguntaAppState();
   }
